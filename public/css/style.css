@@ -1,0 +1,82 @@
+html, body {
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    top: 0;
+    bottom: 0;
+    font-family: 'Lato', sans-serif;
+}
+
+.top-nav {
+    display: block;
+}
+
+.top-nav ul {
+    margin: 0;
+    padding: 20px;
+    position: absolute;
+    right: 6%;
+    top: 2%;
+}
+
+.top-nav ul li {
+    display: inline-block;
+    margin-left: 30px;
+}
+
+.top-nav ul li a {
+    color: black;
+    text-decoration: none;
+    font-size: large;
+}
+
+.top-nav ul li a:hover {
+    color: grey ;
+    transition: 0.15s ease-in;
+}
+
+#landing-page {
+    background: url('../img/banner.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+}
+
+.wrapper-landing {
+    position: relative;
+    margin: 0 auto;
+    width: 100%;
+}
+
+#sitename {
+    padding-left: 20px;
+    padding-top: 20px;
+    font-size: 48px;
+    font-weight: 200;
+}
+
+#title1 {
+    padding-left: 30px;
+    margin-top: 10px;
+    font-size: 22px;
+    font-weight: 100;
+}
+
+.btn-login {
+    border: 1px solid black;
+    padding: 6px 24px;
+}
+
+.container {
+    background-color: #D8E2DC;
+    height: 100%;
+    width: 100%;
+}
+
+
+
+
