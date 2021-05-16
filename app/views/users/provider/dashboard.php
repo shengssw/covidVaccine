@@ -1,7 +1,11 @@
 <?php
-session_start();
 
-echo $_SESSION['org_id']." ".$_SESSION['admin_id']." ".$_SESSION['admin_name']." ".$_SESSION['owner'];
+session_start();
+if(!isset($_SESSION['providerId'])){
+    header("Location: /covidVaccine/app/views/users/login.php");
+}
+
+echo $_SESSION['patientId'];;
 $current_file = basename($_SERVER['PHP_SELF']);
 ?>
 

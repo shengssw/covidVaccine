@@ -72,8 +72,8 @@
                         <p>Dashboard</p>
                     </a>
                 </li>
-                <li class="<?php if($current_file=="hospital_section.php") echo "active" ?>">
-                    <a href="hospital_section.php">
+                <li class="<?php if($current_file=="addapps.php") echo "active" ?>">
+                    <a href="addapps.php">
                         <i class="pe-7s-portfolio"></i>
                         <p>Add Appointment</p>
                     </a>

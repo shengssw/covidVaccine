@@ -5,10 +5,10 @@
     session_start();
 	if(isset($_SESSION['owner'])){
 		if($_SESSION['owner']=="bb"){
-			header("Location: /patient/dashboard.php");
+			header("Location: /covidVaccine/app/views/users/patient/dashboard.php");
 		}
 		else{
-			header("Location: /provider/dashboard.php");
+			header("Location: /covidVaccine/app/views/users/hospital/dashboard.php");
 		}
 	}
 
