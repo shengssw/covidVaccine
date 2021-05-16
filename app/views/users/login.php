@@ -70,7 +70,7 @@
   
   
   
-      <link rel="stylesheet" href="css/style.css">
+      <link rel="stylesheet" href="style.css">
 
   
 </head>
@@ -89,10 +89,11 @@
 
 
 
-
-
+		
 			<button type="submit" name="login-button">Login</button>
+		
 
+		    <p>Don't have an account? <a href="register.php">Sign up now</a>.</p>
 
 		</form>
 

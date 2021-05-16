@@ -25,7 +25,6 @@
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                       <i class="fa fa-globe"></i>
                       <b class="caret"></b>
-                      <span class="notification">2</span>
                   </a>
                   <ul class="dropdown-menu">
                       <li><a href="#">Notification 1</a></li>
@@ -39,7 +38,7 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li><a href="#">My Profile Settings</a></li>
-                        <li><a href="logout.php">Log out</a></li>
+                        <li><a href="../../logout.php">Log out</a></li>
 
 
                     </ul>

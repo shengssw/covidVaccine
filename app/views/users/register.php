@@ -106,9 +106,31 @@ VALUES ('$username', '".md5($password)."', $roleid)";
 
 ?>
 
+<style>
+    body {
+        background: #50a3a2;
+  background: -webkit-linear-gradient(top left, #D8E2DC 20%, #a5c7d6 100%);
+  background: linear-gradient(to bottom right, #D8E2DC 20%, #a5c7d6 100%);
+  height: 750px;
+    }
+
+    .well {
+        background: rgba(255, 255, 255, 0.4);
+    }
+
+    .btn {
+
+        background: #a5c7d6;
+        border: none;
+    }
+
+    
+
+
+</style>
+
+<body style="background-color:#D8E2DC;">
 <div class="container">
-
-
 
     <form class="well form-horizontal" method="post"  id="user_form">
         <fieldset>
@@ -288,6 +310,9 @@ VALUES ('$username', '".md5($password)."', $roleid)";
 </div>
 
 
+
 <?php
 include "footer.php";
 ?>
+
+

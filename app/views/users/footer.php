@@ -3,12 +3,6 @@
 <br>
 
 
-<footer id="myFooter">
-
-    <div>Copyright � 2021</div>
-
-</footer>
-
 
 
 

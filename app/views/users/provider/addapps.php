@@ -23,16 +23,22 @@ $role = mysqli_query($connection,$quer);
 $row = mysqli_fetch_assoc($role);
 $appid = $row['m'] + 1;
 
-$query = "INSERT into `appointment` 
-VALUES ($appid, $providerId, '$date', $timeblock, $num)";
-$result = mysqli_query($connection,$query);
-if($result){
-        echo("Appointments added to our database successfully");
-    } else {
-        echo("add failed");
-    }
+for ($i = 0; $i <= $num; $i++) {
+    $query = "INSERT into `appointment` 
+    VALUES ($appid + $i, $providerId, '$date', $timeblock, 1)";
+    $result = mysqli_query($connection,$query);
 
 }
+
+if($result){
+    echo("Appointments added to our database successfully");
+} else {
+    echo("add failed");
+}
+
+}
+
+
 
 ?>
 
