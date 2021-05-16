@@ -1,0 +1,11 @@
+{
+	"folders": [
+		{
+			"path": "../../../public/admin/provider"
+		},
+		{
+			"path": "../../../public/admin/patient"
+		}
+	],
+	"settings": {}
+}
