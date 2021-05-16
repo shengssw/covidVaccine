@@ -37,12 +37,12 @@
 
 			if($_SESSION['patientId']!= NULL){
 	
-				header("Location: /covidVaccine/public/admin/patient/dashboard.php");
+				header("Location: /covidVaccine/app/views/users/patient/dashboard.php");
 
 			}
 		else{
 		
-			header("Location: /covidVaccine/public/admin/provider/dashboard.php");
+			header("Location: /covidVaccine/app/views/users/provider/dashboard.php");
 		}
 
 
