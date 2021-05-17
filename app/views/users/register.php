@@ -18,9 +18,11 @@ $address = mysqli_real_escape_string($connection,$address);
 $patient = $_POST['rpatient'];
 
 
-$sql= "SELECT * FROM account WHERE username = '$username'";
+$sql= $connection ->prepare("SELECT * FROM account WHERE username = ?");
+$sql ->bind_param('s', $username);
+$sql->execute();
 
-$result = mysqli_query($connection,$sql);
+$result = $sql->get_result();;
 
 if(mysqli_num_rows($result)!=0){
 	echo"Username already exists!!";
@@ -39,19 +41,27 @@ if($patient == "no") {
     $providerid = $prow['m'] + 1;
   
     
-    $adda = "INSERT into `address` 
-    VALUE ('$address', -74, 40)";
-    $resulta = mysqli_query($connection,$adda);
+    $adda = $connection ->prepare("INSERT into `address` 
+    VALUE (?, -74, 40)");
+    $adda->bind_param('s', $address);
+    $adda->execute();
+    
+    $resulta = $adda->get_result();
+    
 
 
-    $addp = "INSERT into `provider` 
-    VALUE ($providerid, '$name', '$address', $mobile, null)";
-    $result2 = mysqli_query($connection,$addp);
+    $addp = $connection ->prepare("INSERT into `Provider` 
+    VALUE (?, ?,?,?, null)");
+    $addp ->bind_param('isss', $providerid, $name, $address, $mobile);
+    $addp->execute();
+    $result2 = $addp->get_result();
 
     
-    $addr = "INSERT into `role` 
-    VALUES ($roleid, null, $providerid)";
-    $result3 = mysqli_query($connection,$addr);
+    $addr = $connection ->prepare("INSERT into `role` 
+    VALUES (?, null, ?)");
+    $addr -> bind_param('ii', $roleid, $providerid);
+    $addr->execute();
+    $result3 = $addr->get_result();
 
 }  else {
     $quer3 = "select max(patientId) m from patient";
@@ -68,39 +78,54 @@ if($patient == "no") {
     $email = mysqli_real_escape_string($connection,$email);
     $ssn = mysqli_real_escape_string($connection,$ssn);
   
+
+    $adda = $connection ->prepare("INSERT into `address` 
+    VALUE (?, -74, 40)");
+    $adda ->bind_param('s', $address);
+    $adda->execute();
     
-    $adda = "INSERT into `address` 
-    VALUE ('$address', -74, 40)";
-    $resulta = mysqli_query($connection,$adda);
+    $resulta = $adda->get_result();
 
 
-    $addp = "INSERT into `patient` 
+    $addp = $connection ->prepare("INSERT into `patient` 
+    VALUE (?,?,?,?, ?,?,?,?, null, null)");
+    $addp ->bind_param ('issssssi',$patientid, $name, $dob,  $ssn, $address, $mobile, $email, $group);
+    $addp->execute();
+    $result2 = $addp->get_result();
 
 
-    VALUE ($patientid, '$name', '$dob',  '$ssn', '$address', $mobile, '$email', $group, null, null)";
-    $result2 = mysqli_query($connection,$addp);
 
-    
-    $addr = "INSERT into `role` 
-    VALUES ($roleid, $patientid, null)";
-    $result3 = mysqli_query($connection,$addr);
+    $addr = $connection ->prepare("INSERT into `role` 
+    VALUES (?, ?, null)");
+    $addr -> bind_param('ii', $roleid, $patientid);
+    $addr->execute();
+    $result3 = $addr->get_result();
+
 }
 $password = stripslashes($_REQUEST['password']);
 $password = mysqli_real_escape_string($connection,$password);
+$hash = password_hash($password, PASSWORD_DEFAULT);
+echo $hash;
 
 
+$query1 = $connection ->prepare("INSERT into `account` 
+VALUES (?, ?, ?)");
+$query1-> bind_param('ssi',$username, $hash, $roleid);
+$query1->execute();
 
+$sql1= $connection ->prepare("SELECT * FROM account WHERE username = ?");
+$sql1 ->bind_param('s', $username);
+$sql1->execute();
+$result1 = $sql1->get_result();
 
-$query = "INSERT into `account` 
-VALUES ('$username', '".md5($password)."', $roleid)";
-    $result = mysqli_query($connection,$query);
-    if($result){
+if(mysqli_num_rows($result1)!=0){
         echo "<div class='form'>
-<h3>You are registered successfully.</h3>
-<br/>Click here to <a href='login.php'>Login</a></div>";
-    } else {
-        echo("failed account");
-    }
+        <h3>You are registered successfully.</h3>
+        <br/>Click here to <a href='login.php'>Login</a></div>";
+} else {
+        echo("failed account1");
+}
+
 }
 }
 

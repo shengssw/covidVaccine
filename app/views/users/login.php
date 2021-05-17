@@ -19,14 +19,16 @@
 	$username = $_POST['username'];
 	$password = $_POST['passwd'];
 
-	$sql = "SELECT * from account natural join role where username ='$username' and password='$password'";
-	$run = mysqli_query($connection,$sql);
+	$sql = $connection->prepare('SELECT * from account natural join role where username = ?');
+	$sql ->bind_param('s', $username);
+	$sql->execute();
+	$run = $sql->get_result();
 	confirm_query($run);
 	$count = mysqli_num_rows($run);
 	$row = mysqli_fetch_array($run);
 
 
-	if ($count > 0) {
+	if (password_verify($password,$row["password"])) {
 
 			session_start();
 			$_SESSION["user_id"] = $row["username"];

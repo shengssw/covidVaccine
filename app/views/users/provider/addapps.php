@@ -10,7 +10,7 @@ if(!isset($_SESSION['providerId'])){
 
 if (isset($_REQUEST['num'])){
 $providerId =  (int) $_SESSION['providerId'];
-echo $providerId;
+
 $current_file = basename($_SERVER['PHP_SELF']);
 
 $date = stripslashes($_REQUEST['apptDate']);
@@ -22,6 +22,7 @@ $quer = "select max(appointId) m from appointment";
 $role = mysqli_query($connection,$quer);
 $row = mysqli_fetch_assoc($role);
 $appid = $row['m'] + 1;
+
 
 for ($i = 0; $i <= $num; $i++) {
     $query = "INSERT into `appointment` 
