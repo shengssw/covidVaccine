@@ -1,6 +1,6 @@
 <?php
-session_start();
-$current_file = basename($_SERVER['PHP_SELF']);
+//session_start();
+//$current_file = basename($_SERVER['PHP_SELF']);
 ?>
 
 

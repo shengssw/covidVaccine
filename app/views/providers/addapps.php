@@ -1,15 +1,14 @@
 <?php
 session_start();
-include('../../../config/config.php');
+include('./app/config/config.php');
 
 
-
-if(!isset($_SESSION['providerId'])){
-    header("Location: /covidVaccine/app/views/users/login.php");
+if(!isset($_SESSION['userid'])){
+    header('location:' . URLROOT . '/users/login');
 }
 
 if (isset($_REQUEST['num'])){
-$providerId =  (int) $_SESSION['providerId'];
+$providerId =  (int) $_SESSION['userid'];
 
 $current_file = basename($_SERVER['PHP_SELF']);
 

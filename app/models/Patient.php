@@ -7,9 +7,11 @@
             $this->db = new Database;
         }
 
-        public function getPatient() {
+        public function getPatient($id) {
             // Prepare statement 
-            $this->db->query("SELECT * FROM Patient WHERE patientId=9;");
+            $this->db->query("SELECT * FROM Patient WHERE patientId=:id;");
+
+            $this->db->bind(':id', $id);
 
             // Get results
             $result = $this->db->resultSet();

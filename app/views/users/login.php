@@ -2,7 +2,7 @@
     
    
 
-    session_start();
+    /*session_start();
 	if(isset($_SESSION['owner'])){
 		if($_SESSION['owner']=="bb"){
 			header("Location: /covidVaccine/app/views/users/patient/dashboard.php");
@@ -58,33 +58,22 @@
 	} 
 	
 
-}
+} */
 
 	
 	
 ?>
 
-<!DOCTYPE html>
-<html >
-<head>
-  <meta charset="UTF-8">
-  <title>Login</title>
-  
-  
-  
-      <link rel="stylesheet" href="style.css">
-
-  
-</head>
-
-<body>
-  <div class="wrapper">
+<?php
+    require APPROOT . '/views/includes/header2.php';
+?>
+<div class="wrapper">
 	<div class="container">
 		<h1>Welcome</h1>
 
 
 		
-		<form class="form" method="post" action="login.php">
+		<form class="form" action="<?php echo URLROOT; ?>/users/login" method="post">
 
 			<input type="text" placeholder="Username" name="username">
 			<input type="password" placeholder="Password" name="passwd">
@@ -95,34 +84,23 @@
 			<button type="submit" name="login-button">Login</button>
 		
 
-		    <p>Don't have an account? <a href="register.php">Sign up now</a>.</p>
+			<p>Don't have an account? <a href="<?php echo URLROOT; ?>/users/register">Sign up now</a>.</p>
 
 		</form>
 
 
 		<label type=text style="color: black">
-			   <?php
-			   if(isset($_GET["error"])){
-				   echo "wrong username or password";
+				<?php
+				if(isset($_GET["error"])){
+					echo "wrong username or password";
 
-			   }
-			   ?>
+				}
+				?>
 
 			</label>
 
 	</div>
-
-	
-
 </div>
-  <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
-
-    <script  src="js/index.js"></script>
 
 </body>
 </html>
-
-<div class="container">
-
-   
-</div>

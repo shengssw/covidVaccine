@@ -1,16 +1,19 @@
 <?php
 
-session_start();
+/*session_start();
 if(!isset($_SESSION['providerId'])){
     header("Location: /covidVaccine/app/views/users/login.php");
 }
 
 echo $_SESSION['patientId'];;
-$current_file = basename($_SERVER['PHP_SELF']);
+$current_file = basename($_SERVER['PHP_SELF']); */
 ?>
 
 
-    <?php include('header.php'); ?>
+<?php
+    require 'header.php';
+    echo $_SESSION['userid'];
+?>
 
 
 
@@ -23,8 +26,8 @@ $current_file = basename($_SERVER['PHP_SELF']);
 		
 		
  <!--   Core JS Files   -->
-        <script src="assets/js/jquery-1.10.2.js" type="text/javascript"></script>
-        <script src="assets/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src=" <?php echo URLROOT; ?>/public/assets/js/jquery-1.10.2.js" type="text/javascript"></script>
+        <script src="<?php echo URLROOT; ?>/public/assets/js/bootstrap.min.js" type="text/javascript"></script>
 
         <!--  Checkbox, Radio & Switch Plugins -->
 

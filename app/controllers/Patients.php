@@ -9,7 +9,7 @@
 
         public function Dashboard() {
             // Get the patient info
-            $patient = $this->patientModel->getPatient();
+            $patient = $this->patientModel->getPatient($_SESSION['userid']);
             
             // Get all the appoints one patient has
             $appointments = $this->patientModel->getAllPatientAppointmentsById($patient[0]->patientId);

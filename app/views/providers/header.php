@@ -18,35 +18,35 @@
 
 
     <!-- Bootstrap core CSS     -->
-    <link href="../patient/assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="<?php echo URLROOT; ?>/public/assets/css/bootstrap.min.css" rel="stylesheet" />
 
     <!-- Animation library for notifications   -->
-    <link href="../patient/assets/css/animate.min.css" rel="stylesheet"/>
+    <link href="<?php echo URLROOT; ?>/public/assets/css/animate.min.css" rel="stylesheet"/>
 
     <!--  Light Bootstrap Table core CSS    -->
-    <link href="../patient/assets/css/light-bootstrap-dashboard.css" rel="stylesheet"/>
-    <link href="../patient/assets/css/table.css" rel="stylesheet">
+    <link href="<?php echo URLROOT; ?>/public/assets/css/light-bootstrap-dashboard.css" rel="stylesheet"/>
+    <link href="<?php echo URLROOT; ?>/public/assets/css/table.css" rel="stylesheet">
 
-    <link href="../patient/assets/css/animation.css" rel="stylesheet">
+    <link href="<?php echo URLROOT; ?>/public/assets/css/animation.css" rel="stylesheet">
 
 
 
     <!--  CSS for Demo Purpose, don't include it in your project     -->
-    <link href="../patient/assets/css/demo.css" rel="stylesheet" />
+    <link href="<?php echo URLROOT; ?>/public/assets/css/demo.css" rel="stylesheet" />
 
     <!--     Fonts and icons     -->
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
-    <link href="../patient/assets/css/pe-icon-7-stroke.css" rel="stylesheet" />
+    <link href="<?php echo URLROOT; ?>/public/assets/css/pe-icon-7-stroke.css" rel="stylesheet" />
 
-    <script src="assets/js/jquery-1.10.2.js" type="text/javascript"></script>
+    <script src="<?php echo URLROOT; ?>/public/assets/js/jquery-1.10.2.js" type="text/javascript"></script>
    <!-- <script src="assets/js/bootstrap.min.js" type="text/javascript"></script>-->
 
-    <script src="../patient/assets/modals/jquery.min.js"></script>
+    <script src="<?php echo URLROOT; ?>/public/assets/modals/jquery.min.js"></script>
     <!-- Latest compiled and minified JavaScript -->
-    <script src="../patient/assets/modals/bootstrap.min.js" ></script>
+    <script src="<?php echo URLROOT; ?>/public/assets/modals/bootstrap.min.js" ></script>
 
-    <link href="../patient/assets/css/custom.css" rel="stylesheet"/>
+    <link href="<?php echo URLROOT; ?>/public/assets/css/custom.css" rel="stylesheet"/>
 
 </head>
 
@@ -60,14 +60,16 @@
 
         <div class="sidebar-wrapper">
             <div class="logo">
+            <?php if(isLoggedIn()): ?>
                 <a href="" class="simple-text">
-                    Hello  <?php echo $_SESSION['admin_name'] ?>
+                    Hello  <?php echo $_SESSION['username'] ?>
                 </a>
+             <?php endif; ?>
             </div>
 
             <ul class="nav">
                 <li class="<?php if($current_file=="dashboard.php") echo "active" ?>">
-                    <a href="dashboard.php">
+                    <a href="<?php echo URLROOT; ?>/providers/dashboard">
                         <i class="pe-7s-graph"></i>
                         <p>Dashboard</p>
                     </a>
@@ -85,5 +87,5 @@
     <div class="main-panel">
 
 <?php
-include '../patient/uppernav.php';
+  require 'uppernav.php';
 ?>

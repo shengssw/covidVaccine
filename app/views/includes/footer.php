@@ -8,12 +8,12 @@
 
 
 
-<script src="js/modernizr.js" type="text/javascript"></script>
-<script src="js/js_function.js"></script>
-<script src="Bootstrap/js/bootstrapvalidator.min.js"></script>
-<script src="Bootstrap/layout/scripts/jquery.backtotop.js"></script>
-<script src="Bootstrap/layout/scripts/jquery.mobilemenu.js"></script>
-<script src="js/index.js"></script>
+<script src="<?php echo URLROOT; ?>/public/js/modernizr.js" type="text/javascript"></script>
+<script src="<?php echo URLROOT; ?>/public/js/js_function.js"></script>
+<script src="<?php echo URLROOT; ?>/public/Bootstrap/js/bootstrapvalidator.min.js"></script>
+<script src="<?php echo URLROOT; ?>/public/Bootstrap/layout/scripts/jquery.backtotop.js"></script>
+<script src="<?php echo URLROOT; ?>/public/Bootstrap/layout/scripts/jquery.mobilemenu.js"></script>
+<script src="<?php echo URLROOT; ?>/public/js/index.js"></script>
 
 
 
@@ -57,7 +57,7 @@
     });
 
 
-</script>
+</script> 
 
 
 </body>

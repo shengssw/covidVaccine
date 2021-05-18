@@ -11,6 +11,8 @@
 
      require_once 'config/config.php';
 
+     require_once 'helper/session-helper.php';
+
      // Instantiate core class
      $init = new Core();
 
