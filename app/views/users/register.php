@@ -105,7 +105,7 @@ if($patient == "no") {
 $password = stripslashes($_REQUEST['password']);
 $password = mysqli_real_escape_string($connection,$password);
 $hash = password_hash($password, PASSWORD_DEFAULT);
-echo $hash;
+
 
 
 $query1 = $connection ->prepare("INSERT into `account` 

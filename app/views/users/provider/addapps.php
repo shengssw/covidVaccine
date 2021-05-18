@@ -23,15 +23,54 @@ $role = mysqli_query($connection,$quer);
 $row = mysqli_fetch_assoc($role);
 $appid = $row['m'] + 1;
 
+$ttable = $connection->prepare("WITH T AS (SELECT patientID, address, distancepreference
+FROM Patient 
+where patientID not in (
+Select patientID
+from patientAppointment
+where status = 'pending' or status = 'accepted' or status = 'vaccinated') and patientID in (
+select patientID
+from Timepreference
+where WEEKDAY(?) = day and timeblock = ?
+))
+
+select patientID
+from T natural join address
+where distancepreference >= (6371 
+* acos(cos(radians((select latitude from address where address = 
+(select address from provider where providerid = ?))) 
+* cos(radians(latitude)) 
+* cos(radians(longitude)) 
+- radians((select longitude from address where address 
+= (select address from provider where providerid = ?)))
++ sin(radians((select latitude from address where address 
+= (select address from provider where providerid = ?)))) * sin(radians(latitude)))))
+"); 
+$ttable -> bind_param('siiii', $date, $timeblock, $providerId, $providerId, $providerId);
+$ttable ->execute();
+$run = $ttable->get_result();
+confirm_query($run);
+$count = mysqli_num_rows($run);
+
 
 for ($i = 0; $i <= $num; $i++) {
     $query = "INSERT into `appointment` 
     VALUES ($appid + $i, $providerId, '$date', $timeblock, 1)";
     $result = mysqli_query($connection,$query);
 
+
 }
 
 if($result){
+    $j = 0;
+    while ($row = mysqli_fetch_array($run) and $j <= $num) {
+        $query2 = "INSERT INTO patientAppointment
+        $id = (int) {$row['PatientID']};
+        value($j + $appid, $id, curtime(), 
+        DATE_ADD(curtime(), INTERVAL 2 DAY), null, 'pending')";
+        $result2 = mysqli_query($connection,$query2);
+        $j++;
+    }
     echo("Appointments added to our database successfully");
 } else {
     echo("add failed");
