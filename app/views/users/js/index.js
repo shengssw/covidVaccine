@@ -7,24 +7,24 @@ $(document).ready(function() {
             validating: 'glyphicon glyphicon-refresh'
         },
         fields: {
-            first_name: {
+            username: {
                 validators: {
                     stringLength: {
                         min: 3,
                     },
 
                     notEmpty: {
-                        message: 'Please enter your first name'
+                        message: 'Please enter your user name'
                     }
                 }
             },
-            last_name: {
+            name: {
                 validators: {
                     stringLength: {
                         min: 3,
                     },
                     notEmpty: {
-                        message: 'Please enter your last name'
+                        message: 'Please enter your name'
                     }
                 }
             },
@@ -38,7 +38,7 @@ $(document).ready(function() {
                     }
                 }
             },
-            psw: {
+            password: {
                 validators: {
                     stringLength: {
                         min: 5,
@@ -51,7 +51,7 @@ $(document).ready(function() {
                 }
             }
             ,
-            psw: {
+            password: {
                 validators: {
                     stringLength: {
                         min: 5,
@@ -97,10 +97,10 @@ $(document).ready(function() {
                     }
                 }
             },
-            sub_district: {
+            ssn: {
                 validators: {
                     notEmpty: {
-                        message: 'Please enter your Sub-District\Thana'
+                        message: 'Please enter your SSN'
                     }
                 }
             },
@@ -113,18 +113,10 @@ $(document).ready(function() {
             },
 
 
-            bloodgroup: {
+            group: {
                 validators: {
                     notEmpty: {
-                        message: 'Please select your blood group'
-                    }
-                }
-            },
-
-            doblood: {
-                validators: {
-                    notEmpty: {
-                        message: 'Please enter your date of birth'
+                        message: 'Please select your priority group'
                     }
                 }
             },
