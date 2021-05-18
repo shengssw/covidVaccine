@@ -9,23 +9,19 @@
 class Pages extends Controller{
     public function __construct()
     {
-        $this->userModel = $this->model('User');
-       
+        //$this->userModel = $this->model('User');
+
     }
 
     public function index() {
-        $user = $this->userModel->getUsers();
-
-        $data = [
-            'users' => $user
-        ];
-
-        $this->view('pages/index', $data);
+        
+        $this->view('pages/index');
     }
 
     public function about() {
-        echo "about";
+        $this->view('pages/about');
     }
+
 }
 
 

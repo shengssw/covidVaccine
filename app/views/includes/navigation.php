@@ -6,6 +6,9 @@
         <li>
             <a href="<?php echo URLROOT; ?>/pages/about">About</a>
         </li>
+        <li>
+            <a href="<?php echo URLROOT; ?>/patients/Dashboard">TEST</a>
+        </li>
         <li class="btn-login">
             <a href="<?php echo URLROOT; ?>/users/login">Login</a>
         </li>
