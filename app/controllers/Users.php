@@ -12,6 +12,6 @@
                 'title' => 'Login page'
             ];
 
-            $this->view('users/login', $data);
+            $this->view('app/views/users/login.php', $data);
         }
     }
