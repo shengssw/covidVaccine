@@ -36,15 +36,14 @@ where WEEKDAY(?) = day and timeblock = ?
 
 select patientID
 from T natural join address
-where distancepreference >= (6371 
-* acos(cos(radians((select latitude from address where address = 
-(select address from provider where providerid = ?))) 
-* cos(radians(latitude)) 
-* cos(radians(longitude)) 
-- radians((select longitude from address where address 
-= (select address from provider where providerid = ?)))
-+ sin(radians((select latitude from address where address 
-= (select address from provider where providerid = ?)))) * sin(radians(latitude)))))
+where distancepreference >= ( 6371 * acos(cos(radians(latitude)) 
+* cos(radians((select latitude from address where address 
+= (select address from provider where providerid = ?)))) 
+* cos(radians((select longitude from address where address 
+= (select address from provider where providerid = ?))) 
+- radians(longitude))
++ sin(radians(latitude)) * sin(radians((select latitude from address where address 
+= (select address from provider where providerid = ?))))))
 "); 
 $ttable -> bind_param('siiii', $date, $timeblock, $providerId, $providerId, $providerId);
 $ttable ->execute();
@@ -53,7 +52,7 @@ confirm_query($run);
 $count = mysqli_num_rows($run);
 
 
-for ($i = 0; $i <= $num; $i++) {
+for ($i = 0; $i < $num; $i++) {
     $query = "INSERT into `appointment` 
     VALUES ($appid + $i, $providerId, '$date', $timeblock, 1)";
     $result = mysqli_query($connection,$query);
@@ -63,12 +62,17 @@ for ($i = 0; $i <= $num; $i++) {
 
 if($result){
     $j = 0;
-    while ($row = mysqli_fetch_array($run) and $j <= $num) {
+    while ($row = mysqli_fetch_array($run) and $j < $num) {
         $query2 = "INSERT INTO patientAppointment
-        $id = (int) {$row['PatientID']};
-        value($j + $appid, $id, curtime(), 
+        value($j + $appid, $row[0], curtime(), 
         DATE_ADD(curtime(), INTERVAL 2 DAY), null, 'pending')";
         $result2 = mysqli_query($connection,$query2);
+  
+
+        $query3 = "UPDATE appointment
+        SET availability = 0
+        where appointID = $j + $appid and providerId = $providerId";
+        $result3 = mysqli_query($connection,$query3);
         $j++;
     }
     echo("Appointments added to our database successfully");
