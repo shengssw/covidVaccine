@@ -70,7 +70,7 @@ class Providers extends Controller{
                     'availability' => $ava,
                 ];  
 
-                var_dump($data);
+               // var_dump($data);
 
                 // Insert New Appointment
                 if ( $this->providerModel->addapps($data)) {

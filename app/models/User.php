@@ -149,7 +149,7 @@
 
          public function insertPatient($data)
          {
-             $this->db->query("INSERT INTO Patient VALUES (:id, :na, :dob, :ssn, :add, :ph, :email, null, 0, null);");
+             $this->db->query("INSERT INTO Patient VALUES (:id, :na, :dob, :ssn, :add, :ph, :email, 5, 0, null);");
                  $this->db->bind(':id', $data['patientId']);
                  $this->db->bind(':na', $data['name']);
                  $this->db->bind(':dob', $data['birthday']);

@@ -14,6 +14,18 @@
             // Get all the appoints one patient has
             $appointments = $this->patientModel->getAllPatientAppointmentsById($patient[0]->patientId);
 
+            // Check any expired appointments
+            $expired = $this->patientModel->getexpireAppointment($patient[0]->patientId);
+            
+            // Update appointments status to expired
+            if (sizeof($expired)>0) {
+                for ($i=0; $i<sizeof($expired); $i++) {
+                    $a = $expired[$i]->patientId;
+                    $b = $expired[$i]->appointId;
+                    $this->patientModel->setexpireAppointment( $a, $b);
+                }
+            }
+
             $data = [
                 'patient' => $patient,
                 'appointments' => $appointments
@@ -68,6 +80,9 @@
                 if($this->patientModel->CancelPatientAppointment($patietnId, $appointId)) {
                     if($this->patientModel->updateAppointmentAvailability($appointId,1)) {
                         header("Location: " . URLROOT . "/patients/Dashboard");
+                        // get appointment data and timeblock
+                        //$r = $this->parentModel->getDateBlock($appointId);
+                        //$p = $this->patientModel->findMatchPatient($appointId, $date, $timeblock);
                     }
                     else {
                         die('Something went wrong!');
