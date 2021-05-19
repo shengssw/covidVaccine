@@ -9,6 +9,31 @@
 $patient = $data['patient'][0];
 $appointments = $data['appointments']; ?>
 
+<style>
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-left: 300px;
+}
+
+table, th, td {
+    border-top: 1px solid #f5f8f6;
+    border-bottom: 1px solid #f5f8f6;
+}
+
+th, td {
+    padding-right: 60px;
+    padding-left: 20px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    font-size: 20px;
+    font-weight: 200;
+    text-align: left;
+}
+
+</style>
+
+
 <div class="wrapper">
     <div class="sidebar">
 
@@ -40,6 +65,30 @@ $appointments = $data['appointments']; ?>
             </ul>
         </div>
     </div>
+
+    <nav class="navbar navbar-default navbar-fixed">
+    <div class="container-fluid">
+     <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navigation-example-2">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <div class="collapse navbar-collapse">
+
+
+            <ul class="nav navbar-nav navbar-right">
+           
+              
+              <li><a href="<?php echo URLROOT; ?>/users/logout">Log out</a></li>
+
+            
+            </ul>
+        </div>
+    </div>
+    </nav>
 
     <div class="section">
             <?php if (sizeof($appointments) > 0) { ?>
@@ -89,8 +138,7 @@ $appointments = $data['appointments']; ?>
 
  </div>
 
- <?php
-  require 'uppernav.php';
-?>
 
+                            </body>
+                            </html>
 

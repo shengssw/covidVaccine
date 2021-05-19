@@ -12,6 +12,7 @@
 
 <div class="container">
     <h1 class="pageTitle"> Preference</h1>
+    <button class="sectionAddButton" style="margin-left:50px;"> <a href="<?php echo URLROOT . "/patients/Dashboard/"?>">Back to Board</a> </button>
 
     <h2 class="sectionTitle">Distance</h2>
     <p class="sectionNoti">You can edit your preferred distance for vaccination location here (in miles).</p>

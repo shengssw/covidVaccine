@@ -1,5 +1,5 @@
 <?php
-session_start();
+/*session_start();
 include('./app/config/config.php');
 
 
@@ -79,7 +79,7 @@ if($result){
     echo("add failed");
 }
 
-}
+} */
 
 
 
@@ -92,7 +92,7 @@ if($result){
 
 
 
-<form class="well form-horizontal" method="post"  id="user_form">
+<form class="well form-horizontal"  action="<?php echo URLROOT; ?>/providers/addapps" method="post"  id="user_form">
     <fieldset>
         <!-- Form Name -->
         <h3 style="text-align: center">Add appointments</h3>
@@ -117,12 +117,11 @@ if($result){
                 <div class="input-group">
                     <span class="input-group-addon">
                     <select name="timeblock" class="form-control selectpicker" >
-                        <option value=" " >Select the time block </option>
-                        <option>1</option>
-                        <option >2</option>
-                        <option >3</option>
-                        <option >4</option>
-                        <option >5</option>
+                    <option value="" disabled selected>Choose Time Slot</option>
+                    <option value="1">8:00 AM - 12:00 PM</option>
+                    <option value="2">12:00PM - 4:00 PM</option>
+                    <option value="3">4:00 PM - 8:00 PM</option>
+                    <option value="4">8:00 PM - 12:00 AM</option>
                     </select>
                 </div>
             </div>

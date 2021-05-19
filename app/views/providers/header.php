@@ -75,7 +75,7 @@
                     </a>
                 </li>
                 <li class="<?php if($current_file=="addapps.php") echo "active" ?>">
-                    <a href="addapps.php">
+                    <a href="<?php echo URLROOT; ?>/providers/addapps">
                         <i class="pe-7s-portfolio"></i>
                         <p>Add Appointment</p>
                     </a>
