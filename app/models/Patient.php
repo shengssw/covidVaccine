@@ -42,10 +42,20 @@
             return $result;
         }
 
+        public function getAppointmentById($id) {
+            $this->db->query("SELECT * From Appointment WHERE appointId= :appointId;");
+
+            $this->db->bind(':appointId', $id);
+
+            // Get results
+            $result = $this->db->single();
+            return $result;
+        }
+
         public function setexpireAppointment($id, $appointId) {
             $this->db->query("UPDATE PatientAppointment SET status='expired' WHERE patientId= :id and appointId= :appointId ;"); 
             $this->db->bind(':appointId', $appointId);
-            $this->db->bind(':patientId', $id);
+            $this->db->bind(':id', $id);
 
             if($this->db->execute()) {
                 return true;
@@ -68,41 +78,40 @@
              }
         }
 
-        public function getDateBlock($appointId) {
-            $this->db->query("SELECT * FROM Appointment WHERE appointId= :appointId;");
 
-            // Bind values
-            $this->db->bind(':appointId', $appointId);
-            
-            // Get results
-            $result = $this->db->single();
-            return $result; 
-        }
-
-        public function findMatchPatient($appointId, $date, $timeblocak) {
+        // Find match patient that is not current patient 
+        public function findAnotherMatchPatient($patientId, $appointId, $date, $timeblocak) {
             $this->db->query("WITH T AS
             (Select patientId, latitude, longitude, distancepreference, qualifyTime
                 FROM Patient LEFT JOIN Address on Patient.address = Address.address left join PriorityGroup on Patient.groupId = PriorityGroup.groupId
-                Where patientId in (
+                Where patientId != :patientId and patientId in (
                 Select patientId
                 FROM TimePreference WHERE day = WEEKDAY(:d)+1
              and timeblock =:tb and patientId NOT IN
             (SELECT patientId
             from patientAppointment
-            where status = 'pending' or status = 'accepted' or status = 'vaccinated')))
+            where status = 'pending' or status = 'accepted' or status = 'vaccinated'))
+            ORDER by Patient.groupId)
+
             SELECT T.patientId
             FROM T, (SELECT * From Appointment a natural join Provider p natural join Address WHERE a.appointId=:appointId ) AS R
-            WHERE R.date >= T.qualifyTime and T.distancepreference >= (6371 * acos( 
-                            cos( radians(T.latitude) ) 
-                          * cos( radians( R.latitude ) ) 
-                          * cos( radians( R.longitude ) - radians(T.longitude) ) 
-                          + sin( radians(T.latitude) ) 
-                          * sin( radians( R.latitude ) )
-                            ) );
+            WHERE R.date >= T.qualifyTime and (T.distancepreference >= (6371 * acos( 
+                cos( radians(T.latitude) ) 
+              * cos( radians( R.latitude ) ) 
+              * cos( radians( R.longitude ) - radians(T.longitude) ) 
+              + sin( radians(T.latitude) ) 
+              * sin( radians( R.latitude ) )
+                ) ) or (6371 * acos( 
+                cos( radians(T.latitude) ) 
+              * cos( radians( R.latitude ) ) 
+              * cos( radians( R.longitude ) - radians(T.longitude) ) 
+              + sin( radians(T.latitude) ) 
+              * sin( radians( R.latitude ) )
+                ) ) is null)
             ");
             
+            $this->db->bind(':patientId', $patientId);
             $this->db->bind(':appointId', $appointId);
-            //$this->db->bind(':pr', $data['providerId']);
             $this->db->bind(':d', $date);
             $this->db->bind(':tb', $timeblocak); 
 
@@ -126,24 +135,10 @@
 
         }
 
-         // Update the appointment availability
-         public function updateAppointment($appointId)
-         {
-             $this->db->query("UPDATE Appointment SET availability=0 WHERE appointId =:app;");
- 
-             $this->db->bind(':app',$appointId);
- 
-             // execute
-             if ($this->db->execute()) {
-                 return true;
-             } else {
-                 return false;
-             }    
-         }
      
         public function declinePatientAppointment($patientId, $appointId) {
            //Prepare statement 
-           $this->db->query("UPDATE PatientAppointment SET status='declined' WHERE patientId= :patientId and appointId= :appointId;");
+           $this->db->query("UPDATE PatientAppointment SET status='declined', replyTime=now() WHERE patientId= :patientId and appointId= :appointId;");
 
            // Bind values
            $this->db->bind(':patientId', $patientId);
@@ -159,7 +154,7 @@
     
         public function AcceptPatientAppointment($patientId, $appointId) {
             //Prepare statement 
-            $this->db->query("UPDATE PatientAppointment SET status='accepted' WHERE patientId= :patientId and appointId= :appointId;");
+            $this->db->query("UPDATE PatientAppointment SET status='accepted', replyTime=now() WHERE patientId= :patientId and appointId= :appointId;");
 
             // Bind values
             $this->db->bind(':patientId', $patientId);

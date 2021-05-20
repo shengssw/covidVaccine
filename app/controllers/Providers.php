@@ -13,10 +13,17 @@ class Providers extends Controller{
 
     }
     public function Dashboard() {
-        // Get the patient info
+        if (!isLoggedIn()) {
+            header("Location: " . URLROOT . "/pages/index");
+        }  elseif (isset($_SESSION['type'])){
+            if($_SESSION['type']!='provider') {
+                header("Location: " . URLROOT . "/pages/index");
+            }
+        }
+        // Get the provider info
         $provider = $this->providerModel->getProvider($_SESSION['userid']);
 
-        // Get all the appoints one patient has
+        // Get all the appoints one provider has
         $appointments = $this->providerModel->getAllProviderAppointmentsById($provider[0]->providerId);
         
         $data = [
@@ -28,6 +35,14 @@ class Providers extends Controller{
     }
 
     public function addapps(){
+        if (!isLoggedIn()) {
+            header("Location: " . URLROOT . "/pages/index");
+        }  elseif (isset($_SESSION['type'])){
+            if($_SESSION['type']!='provider') {
+                header("Location: " . URLROOT . "/pages/index");
+            }
+        }
+
         $data = [
             'appointId' => '',
             'providerId' => '',
@@ -69,8 +84,6 @@ class Providers extends Controller{
                     'timeblock' => $timeblock,
                     'availability' => $ava,
                 ];  
-
-               // var_dump($data);
 
                 // Insert New Appointment
                 if ( $this->providerModel->addapps($data)) {

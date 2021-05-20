@@ -67,16 +67,24 @@
              and timeblock =:tb and patientId NOT IN
             (SELECT patientId
             from patientAppointment
-            where status = 'pending' or status = 'accepted' or status = 'vaccinated')))
+            where status = 'pending' or status = 'accepted' or status = 'vaccinated'))
+            ORDER BY Patient.groupId)
+
             SELECT T.patientId
             FROM T, (SELECT * From Appointment a natural join Provider p natural join Address WHERE a.appointId=:appointId ) AS R
-            WHERE R.date >= T.qualifyTime and T.distancepreference >= (6371 * acos( 
-                            cos( radians(T.latitude) ) 
-                          * cos( radians( R.latitude ) ) 
-                          * cos( radians( R.longitude ) - radians(T.longitude) ) 
-                          + sin( radians(T.latitude) ) 
-                          * sin( radians( R.latitude ) )
-                            ) );
+            WHERE R.date >= T.qualifyTime and (T.distancepreference >= (6371 * acos( 
+                cos( radians(T.latitude) ) 
+              * cos( radians( R.latitude ) ) 
+              * cos( radians( R.longitude ) - radians(T.longitude) ) 
+              + sin( radians(T.latitude) ) 
+              * sin( radians( R.latitude ) )
+                ) ) or (6371 * acos( 
+                cos( radians(T.latitude) ) 
+              * cos( radians( R.latitude ) ) 
+              * cos( radians( R.longitude ) - radians(T.longitude) ) 
+              + sin( radians(T.latitude) ) 
+              * sin( radians( R.latitude ) )
+                ) ) is null)
             ");
             
             $this->db->bind(':appointId', $appointId);

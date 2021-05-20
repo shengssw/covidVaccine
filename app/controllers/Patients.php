@@ -8,23 +8,29 @@
         }
 
         public function Dashboard() {
+            if (!isLoggedIn()) {
+                header("Location: " . URLROOT . "/pages/index");
+            } elseif (isset($_SESSION['type'])){
+                if($_SESSION['type']!='patient') {
+                    header("Location: " . URLROOT . "/pages/index");
+                }
+            }
+
             // Get the patient info
             $patient = $this->patientModel->getPatient($_SESSION['userid']);
             
-            // Get all the appoints one patient has
-            $appointments = $this->patientModel->getAllPatientAppointmentsById($patient[0]->patientId);
-
             // Check any expired appointments
             $expired = $this->patientModel->getexpireAppointment($patient[0]->patientId);
             
             // Update appointments status to expired
             if (sizeof($expired)>0) {
                 for ($i=0; $i<sizeof($expired); $i++) {
-                    $a = $expired[$i]->patientId;
-                    $b = $expired[$i]->appointId;
-                    $this->patientModel->setexpireAppointment( $a, $b);
+                    $this->patientModel->setexpireAppointment( $expired[$i]->patientId, $expired[$i]->appointId);
                 }
-            }
+            } 
+
+             // Get all the appoints one patient has
+             $appointments = $this->patientModel->getAllPatientAppointmentsById($patient[0]->patientId);
 
             $data = [
                 'patient' => $patient,
@@ -34,14 +40,35 @@
             $this->view('patients/Dashboard', $data);
         }
 
-        public function declinePatientAppointment($patietnId, $appointId) {
-            //header("Location: " . URLROOT . "/patients/Dashboard");
-
+        public function declinePatientAppointment($patientId, $appointId) {
+             
             if($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-                if($this->patientModel->declinePatientAppointment($patietnId, $appointId)) {
+                if($this->patientModel->declinePatientAppointment($patientId, $appointId)) {
                     if($this->patientModel->updateAppointmentAvailability($appointId,1)) {
-                        header("Location: " . URLROOT . "/patients/Dashboard");
+                        // Find the date and timeblock of the declined appointment 
+                        $app = $this->patientModel->getAppointmentById($appointId);
+
+                        // Find another patient to match the declined appointment 
+                        $p = $this->patientModel->findAnotherMatchPatient($patientId, $appointId, $app->date, $app->timeblock);
+
+                        if($p) {
+                            // Insert the new patient
+                            if($this->patientModel->insertNewPatientAppointment($p->patientId, $appointId)) {
+
+                                // Update the availability 
+                                if($this->patientModel->updateAppointmentAvailability($appointId,0)) {
+                                    header("Location: " . URLROOT . "/patients/Dashboard"); 
+                                } else {
+                                    die('Something went wrong!');
+                                } 
+                            } else {
+                                die('Something went wrong!');
+                            }
+                        } else {
+                            header("Location: " . URLROOT . "/patients/Dashboard"); 
+
+                        }
                     }
                     else {
                         die('Something went wrong!');
@@ -53,12 +80,12 @@
           
         }
 
-        public function AcceptPatientAppointment($patietnId, $appointId) {
+        public function AcceptPatientAppointment($patientId, $appointId) {
             //header("Location: " . URLROOT . "/patients/Dashboard");
 
             if($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-                if($this->patientModel->AcceptPatientAppointment($patietnId, $appointId)) {
+                if($this->patientModel->AcceptPatientAppointment($patientId, $appointId)) {
                     if($this->patientModel->updateAppointmentAvailability($appointId,0)) {
                         header("Location: " . URLROOT . "/patients/Dashboard");
                     }
@@ -72,29 +99,66 @@
           
         }
 
-        public function CancelPatientAppointment($patietnId, $appointId) {
-            //header("Location: " . URLROOT . "/patients/Dashboard");
-
+        public function CancelPatientAppointment($patientId, $appointId) {
+       
             if($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-                if($this->patientModel->CancelPatientAppointment($patietnId, $appointId)) {
+                // Update the status of the PatientAppointment 
+                if($this->patientModel->CancelPatientAppointment($patientId, $appointId)) {
+
+                    // Update the availability of the appointment to 1
                     if($this->patientModel->updateAppointmentAvailability($appointId,1)) {
-                        header("Location: " . URLROOT . "/patients/Dashboard");
-                        // get appointment data and timeblock
-                        //$r = $this->parentModel->getDateBlock($appointId);
-                        //$p = $this->patientModel->findMatchPatient($appointId, $date, $timeblock);
-                    }
-                    else {
+
+                        // Find the date and timeblock of the cancelled appointment 
+                        $app = $this->patientModel->getAppointmentById($appointId);
+
+                           // Find another patient to match the cancelled appointment 
+                           $p = $this->patientModel->findAnotherMatchPatient($patientId, $appointId, $app->date, $app->timeblock);
+
+                           if($p) {
+                               // Insert the new patient
+                               if($this->patientModel->insertNewPatientAppointment($p->patientId, $appointId)) {
+
+                                    // Update the availability 
+                                    if($this->patientModel->updateAppointmentAvailability($appointId,0)) {
+                                        header("Location: " . URLROOT . "/patients/Dashboard"); 
+                                    } else {
+                                        die('Something went wrong!');
+                                    } 
+                                } else {
+                                    die('Something went wrong!');
+                                }
+                            } else {
+                                header("Location: " . URLROOT . "/patients/Dashboard"); 
+ 
+                            }
+
+                    } else {
                         die('Something went wrong!');
-                    }
+                    } 
+
                 } else {
-                   die('Something went wrong!');
+                    die('Something went wrong!');
                 }
+
             }
-          
+
+            header("Location: " . URLROOT . "/patients/Dashboard"); 
         }
 
+    
         public function preference($id) {
+
+            if (!isLoggedIn()) {
+                header("Location: " . URLROOT . "/pages/index");
+            } elseif ($_SESSION['userid'] != $id) {
+                header("Location: " . URLROOT . "/pages/index");
+            }  elseif (isset($_SESSION['type'])){
+                if($_SESSION['type']!='patient') {
+                    header("Location: " . URLROOT . "/pages/index");
+                }
+            }
+
             // GET THE PATIENT PRGERENCE
            $timePreferences = $this->patientModel->getTimePreferencesById($id);
            $distance = $this->patientModel->getDistanceById($id);
@@ -110,12 +174,20 @@
         }
 
         public function createTime($patientId) {
+            if (!isLoggedIn()) {
+                header("Location: " . URLROOT . "/pages/index");
+            } elseif ($_SESSION['userid'] != $patientId) {
+                header("Location: " . URLROOT . "/pages/index");
+            }  elseif (isset($_SESSION['type'])){
+                if($_SESSION['type']!='patient') {
+                    header("Location: " . URLROOT . "/pages/index");
+                }
+            }
+
             $data = [
                 'patientId' => $patientId,
                 'timeblock' => '',
                 'day' => ''
-
-
             ];
 
             if($_SERVER['REQUEST_METHOD'] == 'POST') {

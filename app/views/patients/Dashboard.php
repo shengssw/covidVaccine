@@ -13,7 +13,7 @@ $appointments = $data['appointments']; ?>
 table {
     border-collapse: collapse;
     width: 100%;
-    margin-left: 300px;
+    margin-left: 220px;
 }
 
 table, th, td {
@@ -35,7 +35,7 @@ th, td {
 
 
 <div class="wrapper">
-    <div class="sidebar">
+    <div class="sidebar" data-color="blue" data-image="assets/img/sidebar-5.jpg">
 
         <!--   you can change the color of the sidebar using: data-color="blue | azure | green | orange | red | purple" -->
 
@@ -67,27 +67,27 @@ th, td {
     </div>
 
     <nav class="navbar navbar-default navbar-fixed">
-    <div class="container-fluid">
-     <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navigation-example-2">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-        </div>
-        <div class="collapse navbar-collapse">
+        <div class="container-fluid">
+        <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navigation-example-2">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="collapse navbar-collapse">
 
 
-            <ul class="nav navbar-nav navbar-right">
-           
-              
-              <li><a href="<?php echo URLROOT; ?>/users/logout">Log out</a></li>
-
+                <ul class="nav navbar-nav navbar-right">
             
-            </ul>
+                
+                <li><a href="<?php echo URLROOT; ?>/users/logout">Log out</a></li>
+
+                
+                </ul>
+            </div>
         </div>
-    </div>
     </nav>
 
     <div class="section">

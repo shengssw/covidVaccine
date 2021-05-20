@@ -71,8 +71,8 @@ html, body {
     padding: 6px 24px;
 }
 
-.container {
-    background-color: #D8E2DC;
+.container{
+    background-color: white;
     height: 100%;
     width: 100%;
 }

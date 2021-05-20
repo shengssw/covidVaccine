@@ -290,10 +290,12 @@
             if ($type==1) {
                 $_SESSION['userid'] = $user->providerId;
                 $_SESSION['username'] = $user->name;
+                $_SESSION['type'] = 'provider';
                 header('location:' . URLROOT . '/providers/Dashboard');
             } else {
                 $_SESSION['userid'] = $user->patientId;
                 $_SESSION['username'] = $user->name;
+                $_SESSION['type'] = 'patient';
                 header('location:' . URLROOT . '/patients/Dashboard');
             }
         }
