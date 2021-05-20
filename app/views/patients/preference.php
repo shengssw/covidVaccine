@@ -24,8 +24,8 @@ table, th, td {
 th, td {
     padding-right: 60px;
     padding-left: 20px;
-    padding-top: 20px;
-    padding-bottom: 20px;
+    padding-top: 15px;
+    padding-bottom: 15px;
     font-size: 20px;
     font-weight: 200;
     text-align: left;

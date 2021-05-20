@@ -43,7 +43,7 @@
         }
 
         public function getAppointmentById($id) {
-            $this->db->query("SELECT * From Appointment WHERE appointId= :appointId;");
+            $this->db->query("SELECT * From Appointment WHERE appointId= :appointId and Appointment.date > (curdate()+2) ;");
 
             $this->db->bind(':appointId', $id);
 
@@ -82,7 +82,7 @@
         // Find match patient that is not current patient 
         public function findAnotherMatchPatient($patientId, $appointId, $date, $timeblocak) {
             $this->db->query("WITH T AS
-            (Select patientId, latitude, longitude, distancepreference, qualifyTime
+            (Select patientId, latitude, longitude, distancepreference, qualifyTime, Patient.groupId
                 FROM Patient LEFT JOIN Address on Patient.address = Address.address left join PriorityGroup on Patient.groupId = PriorityGroup.groupId
                 Where patientId != :patientId and patientId in (
                 Select patientId
@@ -90,7 +90,7 @@
              and timeblock =:tb and patientId NOT IN
             (SELECT patientId
             from patientAppointment
-            where status = 'pending' or status = 'accepted' or status = 'vaccinated'))
+            where status = 'pending' or status = 'accepted' or status = 'vaccinated' or appointId = :appointId))
             ORDER by Patient.groupId)
 
             SELECT T.patientId
@@ -119,6 +119,77 @@
             $result = $this->db->single();
             return $result; 
         }
+
+
+
+        public function findMatchAppointment($patientId) {
+            $this->db->query("with T as
+            (Select latitude, longitude, distancepreference, qualifyTime
+            FROM Patient LEFT JOIN Address on Patient.address = Address.address left join PriorityGroup on Patient.groupId = PriorityGroup.groupId 
+            Where patientId not in 
+            (SELECT patientId
+            from patientAppointment
+            where status = 'pending' or status = 'accepted' or status = 'vaccinated') and patientId = :patientId
+            )
+            SELECT R.appointId
+            FROM T, (SELECT * From Appointment a natural join Provider p natural join Address WHERE a.availability=1 and a.date>(curdate()+2) and a.appointId not in (
+                select appointId from PatientAppointment where patientId = :patientId and status='declined' or status='cancelled')) AS R
+            WHERE R.date >= T.qualifyTime and (T.distancepreference >= (6371 * acos( 
+                cos( radians(T.latitude) ) 
+              * cos( radians( R.latitude ) ) 
+              * cos( radians( R.longitude ) - radians(T.longitude) ) 
+              + sin( radians(T.latitude) ) 
+              * sin( radians( R.latitude ) )
+                ) ) or (6371 * acos( 
+                cos( radians(T.latitude) ) 
+              * cos( radians( R.latitude ) ) 
+              * cos( radians( R.longitude ) - radians(T.longitude) ) 
+              + sin( radians(T.latitude) ) 
+              * sin( radians( R.latitude ) )
+                ) ) is null) and (R.timeblock ,(weekday(R.date)+1)) in (SELECT timeblock, day from TimePreference where patientId = :patientId);");
+
+            
+            $this->db->bind(':patientId', $patientId);
+
+             // execute
+             $result = $this->db->single();
+             return $result;
+        }    
+        
+        public function findAnotherMatchAppointment($patientId, $appointId) {
+            $this->db->query("with T as
+            (Select latitude, longitude, distancepreference, qualifyTime
+            FROM Patient LEFT JOIN Address on Patient.address = Address.address left join PriorityGroup on Patient.groupId = PriorityGroup.groupId 
+            Where patientId not in 
+            (SELECT patientId
+            from patientAppointment
+            where status = 'pending' or status = 'accepted' or status = 'vaccinated') and patientId = :patientId
+            )
+            SELECT R.appointId
+            FROM T, (SELECT * From Appointment a natural join Provider p natural join Address WHERE a.appointId != :appointId and a.availability=1 and a.date>(curdate()+2) and a.appointId not in (
+                select appointId from PatientAppointment where patientId = :patientId and status='declined' or status='cancelled') ) AS R
+            WHERE R.date >= T.qualifyTime and (T.distancepreference >= (6371 * acos( 
+                cos( radians(T.latitude) ) 
+              * cos( radians( R.latitude ) ) 
+              * cos( radians( R.longitude ) - radians(T.longitude) ) 
+              + sin( radians(T.latitude) ) 
+              * sin( radians( R.latitude ) )
+                ) ) or (6371 * acos( 
+                cos( radians(T.latitude) ) 
+              * cos( radians( R.latitude ) ) 
+              * cos( radians( R.longitude ) - radians(T.longitude) ) 
+              + sin( radians(T.latitude) ) 
+              * sin( radians( R.latitude ) )
+                ) ) is null) and (R.timeblock ,(weekday(R.date)+1)) in (SELECT timeblock, day from TimePreference where patientId = :patientId);");
+
+            
+            $this->db->bind(':patientId', $patientId);
+            $this->db->bind(':appointId', $appointId);
+
+             // execute
+             $result = $this->db->single();
+             return $result;
+        } 
 
         // Insert the new patientAppointment into table
         public function insertNewPatientAppointment($patientId, $appointId) {
@@ -245,6 +316,27 @@
            $this->db->bind(':distance', $data['distancepreference']); 
 
            if ($this->db->execute()) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        public function locktable($tablename){
+            $this->db->query("LOCK TABLES :table WRITE;");
+            $this->db->bind(':table', $tablename);
+ 
+            if ($this->db->execute()) {
+                return true;
+            } else {
+                return false;
+            }
+        } 
+
+        public function unlocktable($tablename){
+            $this->db->query("UNLOCK TABLES;");
+ 
+            if ($this->db->execute()) {
                 return true;
             } else {
                 return false;

@@ -84,7 +84,7 @@
         </div>
     </div>
 
-    <div class="main-panel">
+
 
 <?php
   require 'uppernav.php';
