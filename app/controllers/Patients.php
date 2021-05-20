@@ -68,6 +68,10 @@
             $this->view('patients/Dashboard', $data);
         }
 
+        public function Setting(){
+            $this->view('patients/Setting');
+        }
+
 
 
         public function declinePatientAppointment($patientId, $appointId) {

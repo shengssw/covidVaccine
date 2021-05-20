@@ -58,7 +58,7 @@ th, td {
                                 $timeslot = "8:00 PM - 12:00 AM";
                                 break; }
                                 ?>
-                        <tr> <td><?php echo $date ?></td> <td><?php echo $timeslot; ?> </td> <td><?php echo $ava; ?></td> </tr>
+                        <tr> <td><?php echo htmlspecialchars($date, ENT_QUOTES, 'UTF-8'); ?></td> <td><?php echo htmlspecialchars($timeslot, ENT_QUOTES, 'UTF-8');?> </td> <td><?php echo htmlspecialchars($ava, ENT_QUOTES, 'UTF-8'); ?></td> </tr>
                     <?php } }?>   
                 </table>
 
@@ -91,7 +91,7 @@ th, td {
                                     $timeslot = "8:00 PM - 12:00 AM";
                                     break; }
                                     ?>
-                            <tr> <td><?php echo $date ?></td> <td><?php echo $timeslot; ?> </td> <td><?php echo $ava; ?></td> </tr>
+                            <tr> <td><?php echo htmlspecialchars($date, ENT_QUOTES, 'UTF-8'); ?></td> <td><?php echo htmlspecialchars($timeslot, ENT_QUOTES, 'UTF-8');?> </td> <td><?php echo htmlspecialchars($ava, ENT_QUOTES, 'UTF-8'); ?></td> </tr>
                         <?php } }?>   
                     </table>
 

@@ -44,7 +44,7 @@ th, td {
             <div class="logo">
             <?php if(isLoggedIn()): ?>
                 <a href="" class="simple-text">
-                    Hello  <?php echo $_SESSION['username'] ?>
+                    Hello  <?php echo htmlspecialchars($_SESSION['username'], ENT_QUOTES, 'UTF-8');?>
                 </a>
             <?php endif; ?>
             </div>
@@ -60,6 +60,12 @@ th, td {
                     <a href="<?php echo URLROOT."/patients/preference/".$_SESSION['userid']?>">
                         <i class="pe-7s-portfolio"></i>
                         <p>Preference</p>
+                    </a>
+                </li>
+                <li class= "active">
+                    <a href="<?php echo URLROOT."/patients/setting/".$_SESSION['userid']?>">
+                        <i class="pe-7s-portfolio"></i>
+                        <p>Setting</p>
                     </a>
                 </li>
             </ul>
@@ -113,7 +119,7 @@ th, td {
                                 $timeslot = "8:00 PM - 12:00 AM";
                                 break; }
                                 ?>
-                        <tr> <td><?php echo $date ?></td> <td><?php echo $timeslot; ?> </td> <td><?php echo $status; ?></td>  
+                        <tr> <td><?php echo htmlspecialchars($date, ENT_QUOTES, 'UTF-8'); ?></td> <td><?php echo htmlspecialchars($timeslot, ENT_QUOTES, 'UTF-8');?> </td> <td><?php echo htmlspecialchars($status, ENT_QUOTES, 'UTF-8'); ; ?></td>  
                         <td> <?php if ($status == "pending") {?>  
                             <form action="<?php echo URLROOT . "/patients/AcceptPatientAppointment/" . $patient->patientId ."/". $appointId ?>" method="POST">
                                 <input type="submit" name="accept" value="Accept" class="sectionButton">
