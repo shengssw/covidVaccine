@@ -54,11 +54,20 @@ class Providers extends Controller{
             
         }
 
+       
         // Get the provider info
         $provider = $this->providerModel->getProvider($_SESSION['userid']);
 
         // Get all the appoints one provider has
-        $appointments = $this->providerModel->getAllProviderAppointmentsById($provider[0]->providerId);
+
+        if ($status) {
+
+            $appointments = $this->providerModel->filterby($provider[0]->providerId, $status);
+
+        } else {
+            $appointments = $this->providerModel->getAllProviderAppointmentsById($provider[0]->providerId);
+
+        }
 
 
         $data = [

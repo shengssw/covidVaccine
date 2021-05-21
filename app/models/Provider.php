@@ -30,6 +30,19 @@
             return $result;
         }
 
+        public function filterby($id, $status) {
+            //Prepare statement 
+            $this->db->query("SELECT * FROM Appointment natural join PatientAppointment WHERE providerId= :id and status = :status;");
+
+            // Bind values
+            $this->db->bind(':id', $id);
+            $this->db->bind(':status', $status);
+
+            // Get results
+            $result = $this->db->resultSet();
+            return $result;
+        }
+
         public function getCurrentMaxId(){
             //appointment
             $this->db->query("SELECT max(appointId) m FROM Appointment;");
