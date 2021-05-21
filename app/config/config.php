@@ -5,19 +5,6 @@
     define('DB_PASSWORD', '13584805723wS');
     define('DB_NAME', 'covidVac');
 
-    $connection = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
-
-    if(mysqli_connect_error()){
-        die("Database Connection failed".mysqli_connect_error()." ".mysqli_connect_errno()." ");
-    }
-
-    function confirm_query($result_set){
-
-        if(!$result_set){
-        die("Database query failed");
-    }
-} 
-
 
     //APPROOT
     define('APPROOT', dirname(dirname(__FILE__)));
