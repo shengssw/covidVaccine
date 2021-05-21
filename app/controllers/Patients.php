@@ -69,8 +69,100 @@
         }
 
         public function Setting(){
-            $this->view('patients/Setting');
+            if (!isLoggedIn()) {
+                header("Location: " . URLROOT . "/pages/index");
+            } elseif (isset($_SESSION['type'])){
+                if($_SESSION['type']!='patient') {
+                    header("Location: " . URLROOT . "/pages/index");
+                }
+            }
+
+            $patientId = $_SESSION['userid'];
+
+           // Get the patient info
+            $patient = $this->patientModel->getPatient($_SESSION['userid']);
+
+            $data = [
+                'patientId' => $patientId,
+                'patient' => $patient
+            ];
+
+
+            $this->view('patients/Setting', $data);
         }
+
+        public function updateUserInfo($patientId) {
+
+
+            if($_SERVER['REQUEST_METHOD'] == 'POST') {
+                $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+             
+                $data = [
+                    'patientId' => $patientId,
+                    'birthday' => trim($_POST['birthday']),
+                    'address'  => $_POST['address'],
+                    'email'  => $_POST['email'],
+                    'ssn'  => $_POST['ssn'],
+                    'phone'  => $_POST['phone'],
+                    'name'  => $_POST['name']
+                ]; 
+
+                if (!empty($_POST['name'])) {
+                    if (!($this->patientModel->updateName($data))) {
+                        die("Something went wrong, please try again!");
+                    } 
+                }
+
+                if (!empty($_POST['ssn'])) {
+                    if (!($this->patientModel->updateSSN($data))) {
+                        die("Something went wrong, please try again!");
+                    } 
+                }
+
+                if (!empty($_POST['birthday'])) {
+                    if (!($this->patientModel->updateBirthday($data))) {
+                        die("Something went wrong, please try again!"); 
+                    } 
+                }
+
+                if (!empty($_POST['phone'])) {
+                    if (!($this->patientModel->updatePhone($data))) {
+                        die("Something went wrong, please try again!");
+                    } 
+                }
+
+                if (!empty($_POST['email'])) {
+                    if (!($this->patientModel->updateEmail($data))) {
+                        die("Something went wrong, please try again!");
+                    } 
+                }
+
+                if (!empty($_POST['address'])) {
+                    $address1 = $data['address'];
+                    $r = $this->patientModel-> checkAddress($address1);
+                    $latitude = 40;
+                    $longitude = -74;
+                    
+            
+                    if (!$r) {
+                        if($this->patientModel->insertAddress($address1, $latitude, $longitude)){
+                            if (!($this->patientModel->updateAddress($data))) {
+                                die("Something went wrong, please try again!");
+                            } 
+                        } else {
+                            die("Something went wrong, please try again!");
+                        }
+                    } else {
+                        if (!($this->patientModel->updateAddress($data))) {
+                            die("Something went wrong, please try again!");
+                        }  
+                    }
+                }
+
+                header("Location: " . URLROOT . "/patients/setting");
+            }
+          
+       } 
 
 
 

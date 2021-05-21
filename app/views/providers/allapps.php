@@ -2,7 +2,10 @@
 
 // Global variables
 $provider = $data['provider'][0];
-$appointments = $data['appointments']; ?>
+$appointments = $data['appointments'];
+$statusfilter = $data['statusfilter']; 
+//echo $statusfilter;
+?>
 
 
 <?php
@@ -34,16 +37,29 @@ th, td {
 
 </style>
 
-<h2 class="sectionTitle" style="margin-left: 280px; font-size:23px">Upcoming Appointments</h2>
+<h2 class="sectionTitle" style="margin-left: 280px; font-size:23px">All Appointments</h2>
 <div class="section">
+            <p style="margin-left: 280px; font-size:15px; font-weight:100;">Status Filter: </p>
+            <form class="selection-form" action="<?php echo URLROOT. "/providers/allapps/" ?>" method="POST" style="margin-left: 230px; font-size:12px; font-weight:100;">
+            <select name="status" id="status" style="margin-left: 50px;">
+                <option value="" disabled selected>Choose Status</option>
+                <option value="declined">Declined</option>
+                <option value="cancelled">Cancelled</option>
+                <option value="accepted">Accepted</option>
+                <option value="pending">Pending</option>
+                <option value="noshow">No Show</option>
+                <option value="expired">Expired</option>
+            </select>
+
+            <button class="sectionButton" style="margin-left: 50px; display:inline-block;" type="submit">Submit</button>
+            </form>
             <?php if (sizeof($appointments) > 0) { ?>
                 <table>
-                <tr> <th></th> <th>Date</th> <th>Time Slot</th> <th>status</th> <th>Availablilty</th> <th>Detail</th> </tr>
+                    <tr> <th></th> <th>Date</th> <th>Time Slot</th> <th>status</th> <th>Availablilty</th> <th>Detail</th> </tr>
                     <?php
                         $sequence = 0; 
                         foreach ($appointments as $appointment) {
-                        $today = date("Y-m-d");
-                            if ($today <= $appointment->date) {
+                        if($statusfilter) { 
                             $sequence = $sequence +1;
                             $date = $appointment->date;
                             $timeblock = $appointment->timeblock;
@@ -72,7 +88,38 @@ th, td {
                                 <td><?php echo htmlspecialchars($ava, ENT_QUOTES, 'UTF-8'); ?></td> 
                                 <td> <a href="<?php echo URLROOT. "/providers/singleApp/".$patientId."/".$appointId?>"><i class="pe-7s-angle-right-circle"></i></a></td>
                             </tr>
-                    <?php }} ?>   
+                    <?php } else {
+                         $sequence = $sequence +1;
+                         $date = $appointment->date;
+                         $timeblock = $appointment->timeblock;
+                         $ava = $appointment->availability;
+                         $status = $appointment->status;
+                         $patientId = $appointment->patientId;
+                         $appointId = $appointment->appointId;
+                         switch ($timeblock) {
+                             case 1:
+                                 $timeslot = "8:00 AM - 12:00 PM";
+                                 break;
+                             case 2:
+                                 $timeslot = "12:00PM - 4:00 PM";
+                                 break;
+                             case 3:
+                                 $timeslot = "4:00 PM - 8:00 PM";
+                                 break;
+                             case 4:
+                                 $timeslot = "8:00 PM - 12:00 AM";
+                                 break; }
+                                 ?>
+                         <tr> <td style="padding-left: 20px;"><?php echo $sequence; ?></td>
+                             <td><?php echo htmlspecialchars($date, ENT_QUOTES, 'UTF-8'); ?></td> 
+                             <td><?php echo htmlspecialchars($timeslot, ENT_QUOTES, 'UTF-8');?> </td> 
+                             <td><?php echo htmlspecialchars($status, ENT_QUOTES, 'UTF-8'); ?></td>
+                             <td><?php echo htmlspecialchars($ava, ENT_QUOTES, 'UTF-8'); ?></td> 
+                             <td> <a href="<?php echo URLROOT. "/providers/singleApp/".$patientId."/".$appointId?>"><i class="pe-7s-angle-right-circle"></i></a></td>
+                         </tr>
+
+                  <?php  }
+                } ?>   
                 </table>
 
             <?php } ?>
@@ -80,8 +127,7 @@ th, td {
     </div>
 
    
-	
-		
+
  <!--   Core JS Files   -->
         <script src=" <?php echo URLROOT; ?>/public/assets/js/jquery-1.10.2.js" type="text/javascript"></script>
         <script src="<?php echo URLROOT; ?>/public/assets/js/bootstrap.min.js" type="text/javascript"></script>

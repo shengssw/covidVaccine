@@ -12,7 +12,7 @@ $appointments = $data['appointments']; ?>
 <style>
 table {
     border-collapse: collapse;
-    width: 100%;
+    width: 90%;
     margin-left: 220px;
 }
 
@@ -63,7 +63,7 @@ th, td {
                     </a>
                 </li>
                 <li class= "active">
-                    <a href="<?php echo URLROOT."/patients/setting/".$_SESSION['userid']?>">
+                    <a href="<?php echo URLROOT."/patients/setting/"?>">
                         <i class="pe-7s-portfolio"></i>
                         <p>Setting</p>
                     </a>

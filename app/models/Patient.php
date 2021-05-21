@@ -17,6 +17,14 @@
             $result = $this->db->resultSet();
             return $result;
         }
+        
+        public function checkAddress($add) {
+            $this->db->query("SELECT * FROM Address WHERE address= :add;");
+            $this->db->bind(':add', $add);
+            // execute
+            $result = $this->db->single();
+            return $result; 
+        }
 
         public function getAllPatientAppointmentsById($id) {
             //Prepare statement 
@@ -307,6 +315,7 @@
             }
         }
 
+ 
         public function updateDistance($data) {
             //Prepare statement 
            $this->db->query("UPDATE Patient SET distancepreference=:distance WHERE patientId= :patientId; ");
@@ -319,6 +328,103 @@
                 return true;
             } else {
                 return false;
+            }
+        }
+
+        public function updateName($data) {
+       
+            //Prepare statement 
+           $this->db->query("UPDATE Patient SET name=:name WHERE patientId= :patientId; ");
+
+           // Bind values
+           $this->db->bind(':patientId', $data['patientId']);
+           $this->db->bind(':name', $data['name']); 
+
+           if ($this->db->execute()) {
+            return true;
+            } else {
+            return false;
+            }
+        }
+
+
+        public function updateSSN($data) {
+       
+            //Prepare statement 
+           $this->db->query("UPDATE Patient SET ssn=:ssn WHERE patientId= :patientId; ");
+
+           // Bind values
+           $this->db->bind(':patientId', $data['patientId']);
+           $this->db->bind(':ssn', $data['ssn']); 
+
+           if ($this->db->execute()) {
+            return true;
+            } else {
+            return false;
+            }
+        }
+
+        public function updateBirthday($data) {
+       
+            //Prepare statement 
+           $this->db->query("UPDATE Patient SET birthday=:birthday WHERE patientId= :patientId; ");
+
+           // Bind values
+           $this->db->bind(':patientId', $data['patientId']);
+           $this->db->bind(':birthday', $data['birthday']); 
+
+           if ($this->db->execute()) {
+            return true;
+            } else {
+            return false;
+            }
+        }
+
+        public function updateAddress($data) {
+            
+            //Prepare statement 
+           $this->db->query("UPDATE Patient SET address=:address WHERE patientId= :patientId; ");
+
+           // Bind values
+           $this->db->bind(':patientId', $data['patientId']);
+           $this->db->bind(':address', $data['address']); 
+
+           if ($this->db->execute()) {
+            return true;
+            } else {
+            return false;
+            }
+        }
+
+        public function updatePhone($data) {
+       
+            //Prepare statement 
+           $this->db->query("UPDATE Patient SET phone=:phone WHERE patientId= :patientId; ");
+
+           // Bind values
+           $this->db->bind(':patientId', $data['patientId']);
+           $this->db->bind(':phone', $data['phone']); 
+
+           if ($this->db->execute()) {
+            return true;
+            } else {
+            return false;
+            }
+        }
+
+        public function updateEmail($data) {
+       
+            //Prepare statement 
+           $this->db->query("UPDATE Patient SET email=:email WHERE patientId= :patientId; ");
+
+           // Bind values
+           $this->db->bind(':patientId', $data['patientId']);
+           $this->db->bind(':email', $data['email']); 
+
+           if ($this->db->execute()) {
+            return true;
+            } else {
+            return false;
             }
         }
 

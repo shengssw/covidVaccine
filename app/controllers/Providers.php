@@ -34,6 +34,91 @@ class Providers extends Controller{
         $this->view('providers/Dashboard', $data);
     }
 
+    public function allapps() {
+        if (!isLoggedIn()) {
+            header("Location: " . URLROOT . "/pages/index");
+        }  elseif (isset($_SESSION['type'])){
+            if($_SESSION['type']!='provider') {
+                header("Location: " . URLROOT . "/pages/index");
+            }
+        }
+
+        $statusfilter = "";
+        if($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+ 
+            $status = $_POST['status'];
+            if($status) {
+                $statusfilter = $status;
+            }
+            
+        }
+
+        // Get the provider info
+        $provider = $this->providerModel->getProvider($_SESSION['userid']);
+
+        // Get all the appoints one provider has
+        $appointments = $this->providerModel->getAllProviderAppointmentsById($provider[0]->providerId);
+
+
+        $data = [
+            'provider' => $provider,
+            'appointments' => $appointments,
+            'statusfilter' => $statusfilter
+        ];
+        
+        $this->view('providers/allapps', $data);
+    }
+
+    public function singleApp($patientId, $appointId) {
+        if (!isLoggedIn()) {
+            header("Location: " . URLROOT . "/pages/index");
+        }  elseif (isset($_SESSION['type'])){
+            if($_SESSION['type']!='provider') {
+                header("Location: " . URLROOT . "/pages/index");
+            }
+        }
+
+        // find appointment patient
+        $patient = $this->providerModel->getPatientById($patientId);
+        $app = $this->providerModel->getPatientAppointmentById($patientId, $appointId);
+        $appointment = $this->providerModel->getAppointmentById($appointId);
+
+        $data = [
+            'patientId' => $patientId,
+            'appointId' => $appointId,
+            'patient' => $patient,
+            'patientappointment' => $app,
+            'appointment' => $appointment
+        ];
+
+        $this->view('providers/singleApp', $data);
+    }
+
+    public function updateStatus($patientId, $appointId) {
+
+        if($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+ 
+            $status = $_POST['status'];
+            //echo $status;
+
+            if(!$status) {
+                header("Location: " . URLROOT . "/providers/singleApp/".$patientId."/".$appointId); 
+            }
+
+            // Call the model function to update 
+            if($this->providerModel->updatePatientAppointmentStatus($appointId, $patientId, $status)){
+                header("Location: " . URLROOT . "/providers/singleApp/".$patientId."/".$appointId);  
+            } else {
+                die("Something went wrong, please try again!");  
+            } 
+            
+        } 
+
+        header("Location: " . URLROOT . "/providers/singleApp/".$patientId."/".$appointId);  
+    }
+
     public function addapps(){
         if (!isLoggedIn()) {
             header("Location: " . URLROOT . "/pages/index");

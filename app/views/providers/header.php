@@ -68,16 +68,22 @@
             </div>
 
             <ul class="nav">
-                <li class="<?php if($current_file=="dashboard.php") echo "active" ?>">
+                <li class="active">
                     <a href="<?php echo URLROOT; ?>/providers/dashboard">
                         <i class="pe-7s-graph"></i>
                         <p>Dashboard</p>
                     </a>
                 </li>
-                <li class="<?php if($current_file=="addapps.php") echo "active" ?>">
+                <li class="active" >
                     <a href="<?php echo URLROOT; ?>/providers/addapps">
                         <i class="pe-7s-portfolio"></i>
                         <p>Add Appointment</p>
+                    </a>
+                </li>
+                <li class="active" >
+                    <a href="<?php echo URLROOT; ?>/providers/allapps">
+                    <i class="pe-7s-portfolio"></i> 
+                    <p>All Appointments</p>
                     </a>
                 </li>
             </ul>

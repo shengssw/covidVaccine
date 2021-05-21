@@ -58,6 +58,12 @@ th, td {
                         <p>Preference</p>
                     </a>
                 </li>
+                <li class= "active">
+                    <a href="<?php echo URLROOT."/patients/setting/"?>">
+                        <i class="pe-7s-portfolio"></i>
+                        <p>Setting</p>
+                    </a>
+                </li> 
             </ul>
         </div>
     </div>

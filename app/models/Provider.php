@@ -20,7 +20,7 @@
 
         public function getAllProviderAppointmentsById($id) {
             //Prepare statement 
-            $this->db->query("SELECT * FROM Appointment WHERE providerId= :id;");
+            $this->db->query("SELECT * FROM Appointment natural join PatientAppointment WHERE providerId= :id;");
 
             // Bind values
             $this->db->bind(':id', $id);
@@ -125,6 +125,53 @@
             } else {
                 return false;
             }    
+        }
+
+        // Find the information of patient of the appointment 
+        public function getPatientById($patientId) {
+            $this->db->query("SELECT * FROM Patient WHERE patientId = :patientId;");
+            $this->db->bind(':patientId', $patientId );
+
+            // execute
+            $result = $this->db->single();
+            return $result; 
+        }
+
+        // Find the patient appointment info 
+        public function getPatientAppointmentById($patientId, $appointId) {
+            $this->db->query("SELECT * FROM PatientAppointment WHERE patientId = :patientId and appointId =:appointId;");
+            $this->db->bind(':patientId', $patientId );
+            $this->db->bind(':appointId', $appointId);
+
+            // execute
+            $result = $this->db->single();
+            return $result;  
+        }
+
+        // Find the patient appointment info 
+        public function getAppointmentById($appointId) {
+            $this->db->query("SELECT * FROM Appointment WHERE appointId =:appointId;");
+            $this->db->bind(':appointId', $appointId);
+
+            // execute
+            $result = $this->db->single();
+            return $result;  
+        }
+
+        // Update the patien appointment status
+        public function updatePatientAppointmentStatus($appointId, $patientId, $status) {
+            $this->db->query("UPDATE PatientAppointment SET status= :status WHERE appointId= :appointId and patientId= :patientId");
+
+            $this->db->bind(':patientId', $patientId);
+            $this->db->bind(':appointId', $appointId);
+            $this->db->bind(':status', $status);
+            
+            // execute
+            if ($this->db->execute()) {
+                return true;
+            } else {
+                return false;
+            }     
         }
 
 

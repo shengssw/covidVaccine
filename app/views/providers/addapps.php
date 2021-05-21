@@ -88,7 +88,7 @@ if($result){
 
     <?php include('header.php'); ?>
 
-    <div class="container">
+    <div class="container" style="margin-left:240px;">
 
 
 
