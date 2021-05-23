@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * Database query for Providers
+ * 
+ * @author Sheng
+ */
     class Provider {
         private $db;
 

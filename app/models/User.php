@@ -1,4 +1,9 @@
 <?php
+/**
+ * Database query for Account/ register/ login
+ * 
+ * @author Sheng
+ */
 
     class User {
         private $db;

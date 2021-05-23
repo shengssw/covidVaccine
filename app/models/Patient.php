@@ -1,4 +1,9 @@
 <?php
+/**
+ * Database query for Patients
+ * 
+ * @author Sheng
+ */
 
     class Patient {
         private $db;

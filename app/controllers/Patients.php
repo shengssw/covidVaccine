@@ -1,4 +1,10 @@
-<?php 
+<?php
+
+/**
+ * Controller for patients
+ * 
+ * @author Sheng
+ */
 
     class Patients extends Controller {
 

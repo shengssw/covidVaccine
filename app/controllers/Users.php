@@ -1,4 +1,10 @@
-<?php 
+<?php
+
+/**
+ * Default controller for users 
+ * 
+ * @author Sheng
+ */
 
     class Users extends Controller {
 
