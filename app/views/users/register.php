@@ -13,6 +13,7 @@
 
     <div class="container">
 
+
         <form class="well form-horizontal" action="<?php echo URLROOT; ?>/users/register" method="post"  id="user_form">
             <fieldset>
 
@@ -175,7 +176,11 @@
                     <label class="col-md-4 control-label"></label>
                     <div class="col-md-4">
                         <button type="submit" id="button" class="btn" name="sign_up" >Sign-Up<span class="glyphicon glyphicon-send"></span></button>
+                        <button type="button" class="btn" style="margin-top:20px; background:transparent;"> <a href="<?php echo URLROOT; ?>/pages/index">Cancel </a> </button>
                     </div>
+        
+                       
+                   
                 </div>
 
 

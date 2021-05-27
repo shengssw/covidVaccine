@@ -2,6 +2,8 @@
     require APPROOT . '/views/includes/header2.php';
 ?>
 <div class="wrapper">
+<a href="<?php echo URLROOT; ?>/pages/index" style="text-decoration: none; font-weight:200; color:white;
+	padding: 20px; font-size:20px;"> > Back</a>
 	<div class="container">
 		<h1>Welcome</h1>
 
