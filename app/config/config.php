@@ -1,9 +1,9 @@
 <?php
-    // Database parameters
+    // Database parameters, you can add you own here
     define('DB_HOST', '127.0.0.1');
     define('DB_USER', 'root');
-    define('DB_PASSWORD', '13584805723wS');
-    define('DB_NAME', 'covidVac');
+    define('DB_PASSWORD', '');
+    define('DB_NAME', '');
 
 
     //APPROOT

@@ -48,8 +48,17 @@ th, td {
                             $date = $appointment->date;
                             $timeblock = $appointment->timeblock;
                             $ava = $appointment->availability;
-                            $status = $appointment->status;
-                            $patientId = $appointment->patientId;
+                            if (!empty($appointment->status)) {
+                                $status = $appointment->status; 
+                            } else {
+                                $status = "unmatched";
+                            }
+
+                            if ($appointment->patientId) {
+                                $patientId = $appointment->patientId;
+                            } else {
+                                $patientId = NULL;
+                            };
                             $appointId = $appointment->appointId;
                             switch ($timeblock) {
                                 case 1:
@@ -70,7 +79,9 @@ th, td {
                                 <td><?php echo htmlspecialchars($timeslot, ENT_QUOTES, 'UTF-8');?> </td> 
                                 <td><?php echo htmlspecialchars($status, ENT_QUOTES, 'UTF-8'); ?></td>
                                 <td><?php echo htmlspecialchars($ava, ENT_QUOTES, 'UTF-8'); ?></td> 
-                                <td> <a href="<?php echo URLROOT. "/providers/singleApp/".$patientId."/".$appointId?>"><i class="pe-7s-angle-right-circle"></i></a></td>
+                                <td> <?php if(is_null($patientId)==false) {?> 
+                                    <a href="<?php echo URLROOT. "/providers/singleApp/".$patientId."/".$appointId?>"><i class="pe-7s-angle-right-circle"></i></a>
+                                    <?php } ?></td>
                             </tr>
                     <?php }} ?>   
                 </table>

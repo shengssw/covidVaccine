@@ -24,7 +24,7 @@
 
         public function getAllProviderAppointmentsById($id) {
             //Prepare statement 
-            $this->db->query("SELECT * FROM Appointment natural join PatientAppointment WHERE providerId= :id;");
+            $this->db->query("SELECT * FROM Appointment left join PatientAppointment on Appointment.appointId = PatientAppointment.appointId WHERE providerId= :id;");
 
             // Bind values
             $this->db->bind(':id', $id);

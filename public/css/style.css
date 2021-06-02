@@ -46,6 +46,13 @@ html, body {
     position: absolute;
 }
 
+#about-page {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    background-color:#D8E2DC ;
+}
+
 .wrapper-landing {
     position: relative;
     margin: 0 auto;
@@ -64,6 +71,21 @@ html, body {
     margin-top: 10px;
     font-size: 22px;
     font-weight: 100;
+}
+
+#about-title {
+    padding-left: 30px;
+    padding-top: 15px;
+    font-size: 35px;
+    font-weight: 200; 
+}
+
+#about-content {
+    padding-top: 70px;
+    padding-left: 100px ;
+    padding-right: 100px;
+    font-size: 18px;
+    font-weight: 200;
 }
 
 .btn-login {
